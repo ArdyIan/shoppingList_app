@@ -24,9 +24,8 @@ TextStyle title2 = GoogleFonts.poppins(
   fontWeight: semiBold,
   fontSize: 50,
 );
-TextStyle title3 = GoogleFonts.poppins(
-  fontSize : 20
-);
+TextStyle title3 = GoogleFonts.poppins(fontSize: 20);
+TextStyle title4 = GoogleFonts.poppins(fontSize: 16, color: textColor2);
 TextStyle blackTextStyle = GoogleFonts.poppins(
   color: textColor3,
 );
