@@ -163,18 +163,25 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context) {
           return FloatingActionButton(
             onPressed: () {
-              setState(() {
-                String lastNoteTitle = sampleNotes.isNotEmpty
-                    ? sampleNotes.last.title
-                    : 'Catatan Baru';
-                Note newNote = Note(
-                    id: sampleNotes.length,
-                    title: lastNoteTitle,
-                    content: 'Isi',
-                    modifiedTime: DateTime.now());
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                        height: 400,
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_back),
+                            onPressed: () {
+//lanjut ngerjain bagian icon assets
 
-                sampleNotes.add(newNote);
-              });
+                              Navigator.pop(context);
+                              Image(
+                                  image: AssetImage('assets/Iconchemical.jpg'));
+                            },
+                          ),
+                        ));
+                  });
             },
             backgroundColor: Colors.purple[400],
             shape: CircleBorder(),
