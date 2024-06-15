@@ -238,7 +238,6 @@ class _HomePageState extends State<HomePage> {
       ),
 //bottom navigator bawah dengan icon dan floating button
       bottomNavigationBar: SizedBox(
-        height: 60,
         child: BottomAppBar(
           color: Colors.purple[400],
           shape: CircularNotchedRectangle(),
