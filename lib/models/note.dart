@@ -1,6 +1,3 @@
-
-
-
 class Note {
   int id;
   String title;
@@ -13,6 +10,13 @@ class Note {
     required this.content,
     required this.modifiedTime,
   });
+
+//method untuk mengubah judul dan konten catatan
+  void editNote(String newTitle, String newContent) {
+    this.title = newTitle;
+    this.content = newContent;
+    this.modifiedTime = DateTime.now();
+  }
 }
 
 List<Note> sampleNotes = [
