@@ -12,7 +12,9 @@ class EditNotePage extends StatefulWidget {
 }
 
 class _editNotePage extends State<EditNotePage> {
+  TextEditingController titleController = TextEditingController();
   List<TextEditingController> listController = [TextEditingController()];
+  List<bool> isChecked = [false];
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,19 @@ class _editNotePage extends State<EditNotePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 35, right: 35, top: 20),
+              padding: const EdgeInsets.all(15.0),
+              child: TextField(
+                controller: titleController,
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Enter Title",
+                    hintStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey,
+                    )),
+              ),
               // child: Text(
               //   "Title",
               //   style: GoogleFonts.poppins(
@@ -39,11 +53,19 @@ class _editNotePage extends State<EditNotePage> {
             ListView.builder(
               padding: EdgeInsets.symmetric(horizontal: 15),
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: listController.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Row(children: [
+                    Checkbox(
+                        value: isChecked[index],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isChecked[index] = value!;
+                          });
+                        }),
                     Expanded(
                       child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -53,6 +75,7 @@ class _editNotePage extends State<EditNotePage> {
                             color: const Color(0xFF2E384E),
                             borderRadius: BorderRadius.circular(10),
                           ),
+//Bagian title
                           child: TextFormField(
                               controller: listController[index],
                               autofocus: false,
@@ -67,22 +90,23 @@ class _editNotePage extends State<EditNotePage> {
                     const SizedBox(
                       width: 10,
                     ),
-                    index != 0
-                        ? GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                listController[index].clear();
-                                listController[index].dispose();
-                                listController.removeAt(index);
-                              });
-                            },
-                            child: const Icon(
-                              Icons.delete,
-                              color: Color(0xFF6B74D6),
-                              size: 35,
-                            ),
-                          )
-                        : const SizedBox()
+                    // index != 0 ?
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          listController[index].clear();
+                          listController[index].dispose();
+                          listController.removeAt(index);
+                          isChecked.removeAt(index);
+                        });
+                      },
+                      child: const Icon(
+                        Icons.delete,
+                        color: Color(0xFF6B74D6),
+                        size: 35,
+                      ),
+                    )
+                    // : const SizedBox()
                   ]),
                 );
               },
@@ -94,6 +118,7 @@ class _editNotePage extends State<EditNotePage> {
               onTap: () {
                 setState(() {
                   listController.add(TextEditingController());
+                  isChecked.add(false);
                 });
               },
               child: Center(
