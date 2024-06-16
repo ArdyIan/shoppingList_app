@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditNotePage(note: note),
+        builder: (context) => EditNotePage(),
       ),
     ).then((updatedNote) {
       if (updatedNote != null) {
@@ -138,80 +138,86 @@ class _HomePageState extends State<HomePage> {
 
 // ListVIEW homepage
 // berubah jadi grouped listview
-      body: GroupedListView<Note, DateTime>(
-        elements: filteredNotes,
-        groupBy: (note) => DateTime(note.modifiedTime.year,
-            note.modifiedTime.month, note.modifiedTime.day),
-        groupSeparatorBuilder: (DateTime date) => Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            DateFormat.yMMMd().format(date),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body: Expanded(
+        child: GroupedListView<Note, DateTime>(
+          elements: filteredNotes,
+          groupBy: (note) => DateTime(note.modifiedTime.year,
+              note.modifiedTime.month, note.modifiedTime.day),
+          groupSeparatorBuilder: (DateTime date) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              DateFormat.yMMMd().format(date),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        itemBuilder: (context, Note note) {
-          return Card(
-            margin: EdgeInsets.only(bottom: 20),
-            color: getRandomColor(),
-            elevation: 3,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ListTile(
-                title: RichText(
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  text: TextSpan(
-                    text: '${note.title} \n',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      height: 1.5,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: '${note.content}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                          height: 1.5,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    'Edited: ${DateFormat('EEE MMM d, yyyy hh:mm a').format(note.modifiedTime)}',
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontStyle: FontStyle.italic,
-                      color: Colors.blueGrey,
+          itemBuilder: (context, Note note) {
+            return Card(
+              margin: EdgeInsets.only(bottom: 20),
+              color: getRandomColor(),
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListTile(
+                  title: RichText(
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                      text: '${note.title} \n',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        height: 1.5,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '${note.content}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                            height: 1.5,
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                ),
-                trailing: SizedBox(
-                  width: 24,
-                  child: Icon(Icons.arrow_forward),
-                ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      'Edited: ${DateFormat('EEE MMM d, yyyy hh:mm a').format(note.modifiedTime)}',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.blueGrey,
+                      ),
+                    ),
+                  ),
+                  trailing: SizedBox(
+                    width: 24,
+                    child: Icon(Icons.arrow_forward),
+                  ),
 //clickable listview untuk mengubah isi di dalam listview
 //MASIH ERROR
-                // onTap: () {
-                //   editItem(note);
-                // },
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditNotePage(),
+                        ));
+                  },
+                ),
               ),
-            ),
-          );
-        },
-        itemComparator: (item1, item2) =>
-            item1.modifiedTime.compareTo(item2.modifiedTime),
-        useStickyGroupSeparators: true,
-        floatingHeader: true,
-        order: GroupedListOrder.ASC,
+            );
+          },
+          itemComparator: (item1, item2) =>
+              item1.modifiedTime.compareTo(item2.modifiedTime),
+          useStickyGroupSeparators: true,
+          floatingHeader: true,
+          order: GroupedListOrder.ASC,
+        ),
       ),
 //floating action button
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
