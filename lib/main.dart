@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_list/models/editNotePage.dart';
 import 'package:shopping_list/pages/splash_page.dart';
 import 'package:shopping_list/pages/home_page.dart'; // Import file home_page.dart yang berisi HomePage
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => SplashPage(),
-        '/homepage': (context) => HomePage(), // Tambahkan rute untuk HomePage
+        '/homepage': (context) => HomePage(),
         // '/menu': (context) => drawer(),
       },
     );

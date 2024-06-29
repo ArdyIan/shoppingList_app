@@ -29,7 +29,7 @@ class _editNotePage extends State<EditNotePage> {
               child: TextField(
                 controller: titleController,
                 style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: "Enter Title",
@@ -47,17 +47,17 @@ class _editNotePage extends State<EditNotePage> {
               // ),
             ),
             const SizedBox(
-              height: 15,
+              height: 5,
             ),
 //listview untuk list barang
             ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: 5),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: listController.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.only(top: 5),
                   child: Row(children: [
                     Checkbox(
                         value: isChecked[index],
@@ -68,27 +68,37 @@ class _editNotePage extends State<EditNotePage> {
                         }),
                     Expanded(
                       child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 60,
+                          //padding: const EdgeInsets.symmetric(horizontal: 10),
+                          height: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF2E384E),
+                            border: Border.all(color: const Color(0xFF2E384E)),
                             borderRadius: BorderRadius.circular(10),
                           ),
 //Bagian title
                           child: TextFormField(
-                              controller: listController[index],
-                              autofocus: false,
-                              style: const TextStyle(color: Color(0xFFF8F8FF)),
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "Input Text Here",
-                                  hintStyle: TextStyle(
-                                      color: Color.fromARGB(
-                                          255, 132, 140, 155))))),
+                            controller: listController[index],
+                            autofocus: false,
+                            // keyboardType: TextInputType.multiline,
+                            // minLines: 1,
+                            // maxLines: 10,
+                            style: const TextStyle(color: Colors.black),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              hintText: "Input Text Here",
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 132, 140, 155),
+                              ),
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 10),
+                            ),
+                          )),
                     ),
                     const SizedBox(
-                      width: 10,
+                      width: 5,
                     ),
                     // index != 0 ?
                     GestureDetector(
@@ -103,7 +113,7 @@ class _editNotePage extends State<EditNotePage> {
                       child: const Icon(
                         Icons.delete,
                         color: Color(0xFF6B74D6),
-                        size: 35,
+                        size: 25,
                       ),
                     )
                     // : const SizedBox()
@@ -112,7 +122,7 @@ class _editNotePage extends State<EditNotePage> {
               },
             ),
             const SizedBox(
-              height: 50,
+              height: 40,
             ),
             GestureDetector(
               onTap: () {

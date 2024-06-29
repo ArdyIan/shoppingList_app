@@ -8,7 +8,7 @@ void main() {
 }
 
 class addList extends StatefulWidget {
-   addList({super.key});
+  addList({super.key});
   @override
   // State<addList> createState() => _addListState();
   @override
@@ -18,32 +18,30 @@ class addList extends StatefulWidget {
   }
 }
 
-
-
 class _addListState extends State<addList> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         FloatingActionButton(
-            onPressed: () {
-              setState(() {
-                    Note newNote = Note(
-                        id: sampleNotes.length,
-                        title: 'Catatan Baru',
-                        content: 'Isi',
-                        modifiedTime: DateTime.now());
+          onPressed: () {
+            setState(() {
+              Note newNote = Note(
+                  id: sampleNotes.length,
+                  title: 'Catatan Baru',
+                  content: 'Isi',
+                  modifiedTime: DateTime.now());
 
-                    sampleNotes.add(newNote);
-                  });
-            },
-            backgroundColor: Colors.purple[400],
-            shape: CircleBorder(),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-      ),
+              sampleNotes.add(newNote);
+            });
+          },
+          backgroundColor: Colors.purple[400],
+          shape: CircleBorder(),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
       ],
     );
   }
