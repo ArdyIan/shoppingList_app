@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shopping_list/pages/home_page.dart';
 // import 'note.dart';
 
 class EditNotePage extends StatefulWidget {
@@ -19,6 +20,24 @@ class _editNotePage extends State<EditNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePageApp(),
+                  ));
+            },
+            icon: Icon(Icons.arrow_back)),
+        title: Text(
+          "List",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:shopping_list/constants/colors.dart';
 import 'package:shopping_list/models/note.dart';
+import 'package:shopping_list/pages/setting_page.dart';
 import 'package:shopping_list/theme.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:shopping_list/models/editNotePage.dart';
@@ -86,17 +87,6 @@ class _HomePageState extends State<HomePage>
   double size2 = 20.0;
   double size3 = 20.0;
 
-  // void _toggleFab() {
-  //   setState(() {
-  //     toogle = !toogle;
-  //     if (toogle) {
-  //       _controller.forward();
-  //     } else {
-  //       _controller.reverse();
-  //     }
-  //   });
-  // }
-
   //logika untuk mengedit item dengan menavigasi ke halaman editNotePage
   void editItem(Note note) {
     Navigator.push(
@@ -124,7 +114,7 @@ class _HomePageState extends State<HomePage>
             'Shopping List',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
           centerTitle: true,
@@ -141,222 +131,249 @@ class _HomePageState extends State<HomePage>
                 // bottomRight: Radius.circular(25),
                 ),
           ),
-          backgroundColor: Colors.purple[400],
+          backgroundColor: const Color.fromARGB(255, 227, 246, 255),
+          toolbarHeight: 90,
         ),
 
 //drawer menu
         drawer: Drawer(
-          child: ListView(
-            children: [
-              ExpansionTile(
-                title: Text(
-                  'Edit',
-                  style: title3,
-                ),
-                children: [
-                  ListTile(
-                    title: Text(
-                      'Category',
-                      style: title4,
-                    ),
-                    onTap: () {},
-                  ),
-                  ListTile(
-                    title: Text('Products', style: title4),
-                    onTap: () {},
-                  ),
-                ],
-              ),
-              ExpansionTile(
+          child: Container(
+            color: const Color.fromARGB(255, 227, 246, 255),
+            child: ListView(
+              children: [
+                ExpansionTile(
                   title: Text(
-                'Lists',
-                style: title3,
-              )),
-              IconButton(
-                icon: Icon(
-                  Icons.settings,
-                  color: Colors.blueAccent,
+                    'Edit',
+                    style: title3,
+                  ),
+                  children: [
+                    ListTile(
+                      title: Text(
+                        'Category',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      title: Text(
+                        'Products',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                  ],
                 ),
-                onPressed: () {},
-              ),
-            ],
+                ExpansionTile(
+                    title: Text(
+                  'Lists',
+                  style: title3,
+                )),
+                IconButton(
+                  icon: Icon(
+                    Icons.settings,
+                    color: Colors.blue,
+                  ),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SettingPage()));
+                  },
+                ),
+              ],
+            ),
           ),
         ),
 
 // ListVIEW homepage
 // berubah jadi grouped listview
-        body: Stack(children: [
-          GroupedListView<Note, DateTime>(
-            shrinkWrap: true,
-            elements: filteredNotes,
-            groupBy: (note) => DateTime(note.modifiedTime.year,
-                note.modifiedTime.month, note.modifiedTime.day),
-            groupSeparatorBuilder: (DateTime date) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                DateFormat.yMMMd().format(date),
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        body: Container(
+          color: Colors.grey[100],
+          child: Stack(children: [
+            GroupedListView<Note, DateTime>(
+              shrinkWrap: true,
+              elements: filteredNotes,
+              groupBy: (note) => DateTime(note.modifiedTime.year,
+                  note.modifiedTime.month, note.modifiedTime.day),
+              groupSeparatorBuilder: (DateTime date) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  DateFormat.yMMMd().format(date),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
+              itemBuilder: (context, Note note) {
+                return Card(
+                  margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                  //bikin listview jadi random color
+                  // color: getRandomColor(),
+                  color: Colors.white,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ListTile(
+                      title: RichText(
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        text: TextSpan(
+                          text: '${note.title} \n',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            height: 1.5,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: '${note.content}',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 14,
+                                height: 1.5,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          'Edited: ${DateFormat('EEE MMM d, yyyy hh:mm a').format(note.modifiedTime)}',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                      ),
+                      trailing: SizedBox(
+                        width: 24,
+                        child: Icon(Icons.arrow_forward),
+                      ),
+                      //clickable listview untuk mengubah isi di dalam listview
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditNotePage(),
+                            ));
+                      },
+                    ),
+                  ),
+                );
+              },
+              itemComparator: (item1, item2) =>
+                  item1.modifiedTime.compareTo(item2.modifiedTime),
+              useStickyGroupSeparators: true,
+              floatingHeader: true,
+              order: GroupedListOrder.ASC,
             ),
-            itemBuilder: (context, Note note) {
-              return Card(
-                margin: EdgeInsets.only(bottom: 20),
-                //bikin listview jadi random color
-                // color: getRandomColor(),
-                color: Colors.grey[300],
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ListTile(
-                    title: RichText(
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      text: TextSpan(
-                        text: '${note.title} \n',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          height: 1.5,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: '${note.content}',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14,
-                              height: 1.5,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        'Edited: ${DateFormat('EEE MMM d, yyyy hh:mm a').format(note.modifiedTime)}',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontStyle: FontStyle.italic,
-                          color: Colors.blueGrey,
-                        ),
-                      ),
-                    ),
-                    trailing: SizedBox(
-                      width: 24,
-                      child: Icon(Icons.arrow_forward),
-                    ),
-                    //clickable listview untuk mengubah isi di dalam listview
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditNotePage(),
-                          ));
-                    },
+            AnimatedAlign(
+              duration: toogle
+                  ? Duration(milliseconds: 275)
+                  : Duration(milliseconds: 875),
+              alignment: alignment1,
+              curve: toogle ? Curves.easeIn : Curves.elasticOut,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 275),
+                curve: toogle ? Curves.easeIn : Curves.easeOut,
+                height: size1,
+                width: size1,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 55, 55, 55),
+                  borderRadius: BorderRadius.circular(40.0),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      Note newNote = Note(
+                          id: filteredNotes.length,
+                          title: 'Makanan dan Minuman',
+                          content: 'Isi',
+                          modifiedTime: DateTime.now());
+                      filteredNotes.add(newNote);
+                    });
+                  },
+                  icon: Icon(
+                    Icons.emoji_food_beverage_rounded,
+                    color: Colors.white,
                   ),
                 ),
-              );
-            },
-            itemComparator: (item1, item2) =>
-                item1.modifiedTime.compareTo(item2.modifiedTime),
-            useStickyGroupSeparators: true,
-            floatingHeader: true,
-            order: GroupedListOrder.ASC,
-          ),
-          AnimatedAlign(
-            duration: toogle
-                ? Duration(milliseconds: 275)
-                : Duration(milliseconds: 875),
-            alignment: alignment1,
-            curve: toogle ? Curves.easeIn : Curves.elasticOut,
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 275),
-              curve: toogle ? Curves.easeIn : Curves.easeOut,
-              height: size1,
-              width: size1,
-              decoration: BoxDecoration(
-                color: Colors.black87,
-                borderRadius: BorderRadius.circular(40.0),
               ),
-              child: Icon(Icons.message, color: Colors.white),
             ),
-          ),
-          AnimatedAlign(
-            duration: toogle
-                ? Duration(milliseconds: 275)
-                : Duration(milliseconds: 875),
-            alignment: alignment2,
-            curve: toogle ? Curves.easeIn : Curves.elasticOut,
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 275),
-              curve: toogle ? Curves.easeIn : Curves.easeOut,
-              height: size2,
-              width: size2,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(40.0),
+            AnimatedAlign(
+              duration: toogle
+                  ? Duration(milliseconds: 275)
+                  : Duration(milliseconds: 875),
+              alignment: alignment2,
+              curve: toogle ? Curves.easeIn : Curves.elasticOut,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 275),
+                curve: toogle ? Curves.easeIn : Curves.easeOut,
+                height: size2,
+                width: size2,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 55, 55, 55),
+                  borderRadius: BorderRadius.circular(40.0),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      Note newNote = Note(
+                          id: filteredNotes.length,
+                          title: 'Perlengkapan Rumah',
+                          content: 'Isi',
+                          modifiedTime: DateTime.now());
+                      filteredNotes.add(newNote);
+                    });
+                  },
+                  icon: Icon(
+                    Icons.hardware_outlined,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-              child: Icon(Icons.message, color: Colors.white),
             ),
-          ),
-          AnimatedAlign(
-            duration: toogle
-                ? Duration(milliseconds: 275)
-                : Duration(milliseconds: 875),
-            alignment: alignment3,
-            curve: toogle ? Curves.easeIn : Curves.elasticOut,
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 275),
-              curve: toogle ? Curves.easeIn : Curves.easeOut,
-              height: size3,
-              width: size3,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(40.0),
+            AnimatedAlign(
+              duration: toogle
+                  ? Duration(milliseconds: 275)
+                  : Duration(milliseconds: 875),
+              alignment: alignment3,
+              curve: toogle ? Curves.easeIn : Curves.elasticOut,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 275),
+                curve: toogle ? Curves.easeIn : Curves.easeOut,
+                height: size3,
+                width: size3,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 55, 55, 55),
+                  borderRadius: BorderRadius.circular(40.0),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      Note newNote = Note(
+                          id: filteredNotes.length,
+                          title: 'Kebersihan dan Kesehatan',
+                          content: 'Isi',
+                          modifiedTime: DateTime.now());
+                      filteredNotes.add(newNote);
+                    });
+                  },
+                  icon: Icon(
+                    Icons.medical_services_outlined,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-              child: Icon(Icons.message, color: Colors.white),
-            ),
-          ),
-        ]),
-
-//floating action button
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // floatingActionButton: FloatingActionButton(
-        //     backgroundColor: Colors.purple[400],
-        //     onPressed: () {
-        //       if (toogle) {
-        //         toogle = !toogle;
-        //         _controller.forward();
-        //         Future.delayed(Duration(milliseconds: 10), () {
-        //           alignment1 = Alignment(-0.5, -0.3);
-        //           size1 = 50.0;
-        //         });
-        //         Future.delayed(Duration(milliseconds: 100), () {
-        //           alignment2 = Alignment(0.0, -0.5);
-        //           size2 = 50.0;
-        //         });
-        //         Future.delayed(Duration(milliseconds: 200), () {
-        //           alignment3 = Alignment(0.5, -0.3);
-        //           size3 = 50.0;
-        //         });
-        //       } else {
-        //         toogle = !toogle;
-        //         _controller.reverse();
-        //         alignment1 = Alignment(0.0, 0.0);
-        //         alignment2 = Alignment(0.0, 0.0);
-        //         alignment3 = Alignment(0.0, 0.0);
-        //         size1 = size2 = size3 = 20.0;
-        //       }
-        //     },
-
-//floating action button plus
-        // shape: CircleBorder(),
-        // tooltip: 'increment',
-
+            )
+          ]),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             setState(() {
@@ -386,17 +403,24 @@ class _HomePageState extends State<HomePage>
             });
           },
           mini: true,
-          child: Icon(
-            Icons.add,
-            color: Colors.black,
+          shape: CircleBorder(),
+          backgroundColor: const Color.fromARGB(255, 227, 246, 255),
+          child: Container(
+            width: 80.0,
+            height: 80.0,
+            child: Icon(
+              Icons.add,
+              // size: 36.0,
+              color: Colors.black,
+            ),
           ),
         ),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,
-        //bottom navigator bawah dengan icon dan floating button
+//bottom navigator bawah dengan icon dan floating button
         bottomNavigationBar: SizedBox(
           child: BottomAppBar(
-            color: Colors.purple,
+            color: const Color.fromARGB(255, 227, 246, 255),
             shape: CircularNotchedRectangle(),
 //menu pada bottom view
             child: Row(
@@ -410,7 +434,12 @@ class _HomePageState extends State<HomePage>
                   ),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettingPage()));
+                    },
                     icon: Icon(
                       Icons.settings,
                     )),
@@ -418,7 +447,5 @@ class _HomePageState extends State<HomePage>
             ),
           ),
         ));
-    //bottom navigator bawah dengan icon dan floating button
-    //bottom navigator bawah dengan icon dan floating button
   }
 }
