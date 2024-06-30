@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shopping_list/models/note.dart';
 import 'package:shopping_list/pages/home_page.dart';
 // import 'note.dart';
 
 class EditNotePage extends StatefulWidget {
-  const EditNotePage({super.key});
-  // final Note note;
+  // const EditNotePage({super.key});
+  final Note note;
+
+  EditNotePage({required this.note});
 
   // const EditNotePage({required this.note});
   @override
@@ -13,9 +16,46 @@ class EditNotePage extends StatefulWidget {
 }
 
 class _editNotePage extends State<EditNotePage> {
-  TextEditingController titleController = TextEditingController();
-  List<TextEditingController> listController = [TextEditingController()];
-  List<bool> isChecked = [false];
+  late TextEditingController titleController;
+  late List<TextEditingController> listController;
+  late List<bool> isChecked;
+  late TextEditingController _titleController;
+  late TextEditingController _contentController;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.note.title);
+    listController = widget.note.items
+        .map((item) => TextEditingController(text: item.content))
+        .toList();
+    isChecked = widget.note.items.map((item) => item.isChecked).toList();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    for (var controller in listController) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _saveNote() {
+    setState(() {
+      widget.note.title = titleController.text;
+      widget.note.items = listController
+          .asMap()
+          .entries
+          .map((entry) => NoteItem(
+                content: entry.value.text,
+                isChecked: isChecked[entry.key],
+              ))
+          .toList();
+      widget.note.modifiedTime = DateTime.now();
+    });
+    Navigator.pop(context, widget.note);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +63,7 @@ class _editNotePage extends State<EditNotePage> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePageApp(),
-                  ));
+              _saveNote();
             },
             icon: Icon(Icons.arrow_back)),
         title: Text(
@@ -166,10 +202,35 @@ class _editNotePage extends State<EditNotePage> {
             ),
             const SizedBox(
               width: 10,
-            )
+            ),
           ],
         ),
       )),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(
+            context,
+            Note(
+              id: widget.note.id,
+              title: titleController.text,
+              content: listController.map((e) => e.text).join(', '),
+              modifiedTime: DateTime.now(),
+              items: listController
+                  .asMap()
+                  .entries
+                  .map((entry) => NoteItem(
+                        content: entry.value.text,
+                        isChecked: isChecked[entry.key],
+                      ))
+                  .toList(),
+            ),
+          );
+        },
+        backgroundColor: Color.fromARGB(255, 227, 246, 255),
+        child: Icon(
+          Icons.save,
+        ),
+      ),
     );
   }
 }

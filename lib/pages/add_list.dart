@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:shopping_list/models/note.dart';
 
@@ -30,7 +29,11 @@ class _addListState extends State<addList> {
                   id: sampleNotes.length,
                   title: 'Catatan Baru',
                   content: 'Isi',
-                  modifiedTime: DateTime.now());
+                  modifiedTime: DateTime.now(),
+                  items: [
+                    NoteItem(content: ' Item 1', isChecked: false),
+                    NoteItem(content: ' Item 2', isChecked: true),
+                  ]);
 
               sampleNotes.add(newNote);
             });

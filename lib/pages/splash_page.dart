@@ -30,7 +30,11 @@ class _SplashPageState extends State<SplashPage> {
           TextSpan(text: 'Shopping', style: title1),
           TextSpan(
             text: 'List',
-            style: title2,
+            style: TextStyle(
+              color: Colors.blue,
+              fontWeight: semiBold,
+              fontSize: 50,
+            ),
           ),
         ]),
       )),

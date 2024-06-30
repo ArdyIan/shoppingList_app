@@ -1,16 +1,26 @@
+class NoteItem {
+  String content;
+  bool isChecked;
+
+  NoteItem({
+    required this.content,
+    required this.isChecked,
+  });
+}
+
 class Note {
   int id;
   String title;
   String content;
   DateTime modifiedTime;
-  List<String> items; // Tambahkan properti ini
+  List<NoteItem> items; // Tambahkan properti ini
 
   Note({
     required this.id,
     required this.title,
     required this.content,
     required this.modifiedTime,
-    this.items = const [], // Inisialisasi dengan daftar kosong secara default
+    required this.items, // Inisialisasi dengan daftar kosong secara default
   });
 
 //method untuk mengubah judul dan konten catatan
@@ -26,7 +36,12 @@ List<Note> sampleNotes = [
       id: 0,
       title: 'Selamat Datang di Aplikasi Shopping List',
       content: '',
-      modifiedTime: DateTime(2024, 1, 1, 34, 5)),
+      modifiedTime: DateTime(2024, 1, 1, 34, 5),
+      items: [
+        NoteItem(content: ' Item 1', isChecked: false),
+        NoteItem(content: ' Item 2', isChecked: true),
+      ]),
+
   // Note(
   //     id: 1,
   //     title: 'Bayam',

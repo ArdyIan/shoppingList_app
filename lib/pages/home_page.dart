@@ -25,7 +25,7 @@ class HomePageApp extends StatelessWidget {
     return MaterialApp(
       title: 'Shopping List',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.blue,
       ),
       home: HomePage(),
     );
@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditNotePage(),
+        builder: (context) => EditNotePage(note: note),
       ),
     ).then((updatedNote) {
       if (updatedNote != null) {
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage>
                 ),
           ),
           backgroundColor: const Color.fromARGB(255, 227, 246, 255),
-          toolbarHeight: 90,
+          toolbarHeight: 60,
         ),
 
 //drawer menu
@@ -163,7 +163,20 @@ class _HomePageState extends State<HomePage>
                           color: Colors.blue,
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        // Dummy note for demonstration purposes
+                        Note note = Note(
+                          id: 0,
+                          title: 'Example Note',
+                          content: 'Example Content',
+                          modifiedTime: DateTime.now(),
+                          items: [
+                            NoteItem(content: ' Item 1', isChecked: false),
+                            NoteItem(content: ' Item 2', isChecked: true),
+                          ],
+                        );
+                        editItem(note);
+                      },
                     ),
                   ],
                 ),
@@ -205,6 +218,7 @@ class _HomePageState extends State<HomePage>
                 ),
               ),
               itemBuilder: (context, Note note) {
+                int noteIndex = filteredNotes.indexOf(note) + 1;
                 return Card(
                   margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
                   //bikin listview jadi random color
@@ -220,7 +234,7 @@ class _HomePageState extends State<HomePage>
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         text: TextSpan(
-                          text: '${note.title} \n',
+                          text: '${note.title} ${noteIndex}  \n',
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -229,7 +243,9 @@ class _HomePageState extends State<HomePage>
                           ),
                           children: [
                             TextSpan(
-                              text: '${note.content}',
+                              text: note.items
+                                  .map((item) => item.content)
+                                  .join(', '),
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.normal,
@@ -257,11 +273,7 @@ class _HomePageState extends State<HomePage>
                       ),
                       //clickable listview untuk mengubah isi di dalam listview
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditNotePage(),
-                            ));
+                        editItem(note);
                       },
                     ),
                   ),
@@ -291,11 +303,15 @@ class _HomePageState extends State<HomePage>
                 child: IconButton(
                   onPressed: () {
                     setState(() {
+                      // int newIndex = filteredNotes.length + 0;
                       Note newNote = Note(
-                          id: filteredNotes.length,
-                          title: 'Makanan dan Minuman',
-                          content: 'Isi',
-                          modifiedTime: DateTime.now());
+                        id: filteredNotes.length,
+                        title: 'Makanan dan Minuman ',
+                        content: 'Isi',
+                        modifiedTime: DateTime.now(),
+                        items: [],
+                      );
+
                       filteredNotes.add(newNote);
                     });
                   },
@@ -325,10 +341,13 @@ class _HomePageState extends State<HomePage>
                   onPressed: () {
                     setState(() {
                       Note newNote = Note(
-                          id: filteredNotes.length,
-                          title: 'Perlengkapan Rumah',
-                          content: 'Isi',
-                          modifiedTime: DateTime.now());
+                        id: filteredNotes.length,
+                        title: 'Perlengkapan Rumah',
+                        content: 'Isi',
+                        modifiedTime: DateTime.now(),
+                        items: [],
+                      );
+
                       filteredNotes.add(newNote);
                     });
                   },
@@ -358,10 +377,13 @@ class _HomePageState extends State<HomePage>
                   onPressed: () {
                     setState(() {
                       Note newNote = Note(
-                          id: filteredNotes.length,
-                          title: 'Kebersihan dan Kesehatan',
-                          content: 'Isi',
-                          modifiedTime: DateTime.now());
+                        id: filteredNotes.length,
+                        title: 'Kebersihan dan Kesehatan',
+                        content: 'Isi',
+                        modifiedTime: DateTime.now(),
+                        items: [],
+                      );
+
                       filteredNotes.add(newNote);
                     });
                   },

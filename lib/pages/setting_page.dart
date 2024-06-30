@@ -16,11 +16,7 @@ class _SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePageApp(),
-                  ));
+              Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back)),
         title: Text(
